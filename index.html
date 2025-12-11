@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bukti Pembayaran</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    .receipt-shadow {
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    @media print {
+      body { background: white !important; }
+      .no-print { display: none !important; }
+      .receipt { box-shadow: none !important; }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full overflow-auto">
+  <div id="app-wrapper" class="w-full h-full flex items-center justify-center p-8">
+   <div id="receipt" class="receipt bg-white rounded-2xl receipt-shadow max-w-2xl w-full p-10 fade-in"><!-- Header -->
+    <div class="text-center mb-8 pb-6 border-b-2" id="header-section">
+     <div id="company-logo" class="flex justify-center mb-4">
+      <svg class="w-16 h-16" viewbox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="30" id="logo-circle" fill="#3B82F6" opacity="0.1" /> <path d="M32 16L40 24L32 32L24 24L32 16Z" id="logo-path-1" fill="#3B82F6" /> <path d="M32 32L40 40L32 48L24 40L32 32Z" id="logo-path-2" fill="#3B82F6" /> <circle cx="32" cy="32" r="4" id="logo-center" fill="#3B82F6" />
+      </svg>
+     </div>
+     <h1 id="company-name" class="text-3xl font-bold mb-2">PT Ayam Sambung Indonesia</h1>
+     <p id="payment-title" class="text-xl font-semibold uppercase tracking-wide">BUKTI PEMBAYARAN</p>
+    </div><!-- Transaction Info -->
+    <div class="mb-8">
+     <div class="bg-gray-50 rounded-xl p-6 mb-6">
+      <div class="flex items-center justify-center mb-4">
+       <svg class="w-16 h-16" viewbox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="28" id="status-bg" fill="#10B981" opacity="0.2" /> <path d="M20 32L28 40L44 24" stroke="#10B981" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" id="checkmark" />
+       </svg>
+      </div>
+      <p class="text-center text-lg font-semibold mb-1" id="status-text">Pembayaran Berhasil</p>
+      <p id="transaction-id" class="text-center text-sm">ID: TRX-20240115-001</p>
+     </div><!-- Details Grid -->
+     <div class="space-y-4">
+      <div class="flex justify-between items-center py-3 border-b border-gray-200"><span class="font-medium">Nama Pelanggan</span> <span id="customer-name" class="font-semibold">Gregorius Moreno Panji Tri Aananto</span>
+      </div>
+      <div class="flex justify-between items-center py-3 border-b border-gray-200"><span class="font-medium">Metode Pembayaran</span> <span id="payment-method" class="font-semibold">Transfer Bank</span>
+      </div>
+      <div class="flex justify-between items-center py-3 border-b border-gray-200"><span class="font-medium">Tanggal</span> <span id="payment-date" class="font-semibold">11 Desember 2025</span>
+      </div>
+      <div class="flex justify-between items-center py-4 rounded-lg mt-4" id="amount-section"><span class="text-lg font-bold">Total Pembayaran</span> <span id="amount" class="text-2xl font-bold">Rp 50.000</span>
+      </div>
+     </div>
+    </div><!-- Footer -->
+    <div class="text-center pt-6 border-t-2" id="footer-section">
+     <p id="thank-you-message" class="text-lg font-medium mb-3">Terima kasih atas pembayaran Anda</p>
+     <p id="contact-info" class="text-sm">Hubungi kami: support@majubersama.com | +62 812-3456-7890</p><button onclick="window.print()" class="no-print mt-6 px-6 py-3 rounded-lg font-semibold transition-all hover:opacity-90" id="print-button"> <span class="flex items-center justify-center gap-2">
+       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+       </svg> Cetak Bukti Bayar </span> </button>
+    </div>
+   </div>
+  </div>
+  <script>
+    const defaultConfig = {
+      background_color: "#F3F4F6",
+      surface_color: "#FFFFFF",
+      text_color: "#1F2937",
+      primary_action_color: "#3B82F6",
+      secondary_action_color: "#10B981",
+      font_family: "system-ui",
+      font_size: 16,
+      company_name: "PT Ayam Sambung Indonesia",
+      payment_title: "BUKTI PEMBAYARAN",
+      transaction_id: "TRX-20240115-001",
+      customer_name: "Gregorius Moreno Panji Tri Aananto",
+      payment_method: "Transfer Bank",
+      amount: "Rp 1.500.000",
+      payment_date: "15 Januari 2024",
+      thank_you_message: "Terima kasih atas pembayaran Anda",
+      contact_info: "Hubungi kami: support@majubersama.com | +62 812-3456-7890"
+    };
+
+    async function onConfigChange(config) {
+      const fontFamily = config.font_family || defaultConfig.font_family;
+      const fontSize = config.font_size || defaultConfig.font_size;
+      const baseFontStack = 'system-ui, -apple-system, sans-serif';
+      
+      // Apply colors
+      document.getElementById('app-wrapper').style.background = config.background_color || defaultConfig.background_color;
+      document.getElementById('receipt').style.background = config.surface_color || defaultConfig.surface_color;
+      document.getElementById('receipt').style.color = config.text_color || defaultConfig.text_color;
+      
+      // Logo colors
+      document.getElementById('logo-circle').setAttribute('fill', config.primary_action_color || defaultConfig.primary_action_color);
+      document.getElementById('logo-path-1').setAttribute('fill', config.primary_action_color || defaultConfig.primary_action_color);
+      document.getElementById('logo-path-2').setAttribute('fill', config.primary_action_color || defaultConfig.primary_action_color);
+      document.getElementById('logo-center').setAttribute('fill', config.primary_action_color || defaultConfig.primary_action_color);
+      
+      // Status icon
+      document.getElementById('status-bg').setAttribute('fill', config.secondary_action_color || defaultConfig.secondary_action_color);
+      document.getElementById('checkmark').setAttribute('stroke', config.secondary_action_color || defaultConfig.secondary_action_color);
+      document.getElementById('status-text').style.color = config.secondary_action_color || defaultConfig.secondary_action_color;
+      
+      // Header border
+      document.getElementById('header-section').style.borderColor = config.primary_action_color || defaultConfig.primary_action_color;
+      
+      // Amount section
+      document.getElementById('amount-section').style.background = (config.primary_action_color || defaultConfig.primary_action_color) + '15';
+      document.getElementById('amount').style.color = config.primary_action_color || defaultConfig.primary_action_color;
+      
+      // Footer border
+      document.getElementById('footer-section').style.borderColor = config.primary_action_color || defaultConfig.primary_action_color;
+      
+      // Print button
+      document.getElementById('print-button').style.background = config.primary_action_color || defaultConfig.primary_action_color;
+      document.getElementById('print-button').style.color = config.surface_color || defaultConfig.surface_color;
+      
+      // Apply fonts
+      document.getElementById('company-name').style.fontFamily = `${fontFamily}, ${baseFontStack}`;
+      document.getElementById('payment-title').style.fontFamily = `${fontFamily}, ${baseFontStack}`;
+      document.getElementById('customer-name').style.fontFamily = `${fontFamily}, ${baseFontStack}`;
+      document.getElementById('amount').style.fontFamily = `${fontFamily}, ${baseFontStack}`;
+      document.getElementById('thank-you-message').style.fontFamily = `${fontFamily}, ${baseFontStack}`;
+      
+      // Apply font sizes
+      document.getElementById('company-name').style.fontSize = `${fontSize * 1.875}px`;
+      document.getElementById('payment-title').style.fontSize = `${fontSize * 1.25}px`;
+      document.getElementById('status-text').style.fontSize = `${fontSize * 1.125}px`;
+      document.getElementById('transaction-id').style.fontSize = `${fontSize * 0.875}px`;
+      document.querySelectorAll('.flex.justify-between span').forEach(el => {
+        el.style.fontSize = `${fontSize}px`;
+      });
+      document.getElementById('amount').style.fontSize = `${fontSize * 1.5}px`;
+      document.getElementById('thank-you-message').style.fontSize = `${fontSize * 1.125}px`;
+      document.getElementById('contact-info').style.fontSize = `${fontSize * 0.875}px`;
+      
+      // Update text content
+      document.getElementById('company-name').textContent = config.company_name || defaultConfig.company_name;
+      document.getElementById('payment-title').textContent = config.payment_title || defaultConfig.payment_title;
+      document.getElementById('transaction-id').textContent = `ID: ${config.transaction_id || defaultConfig.transaction_id}`;
+      document.getElementById('customer-name').textContent = config.customer_name || defaultConfig.customer_name;
+      document.getElementById('payment-method').textContent = config.payment_method || defaultConfig.payment_method;
+      document.getElementById('amount').textContent = config.amount || defaultConfig.amount;
+      document.getElementById('payment-date').textContent = config.payment_date || defaultConfig.payment_date;
+      document.getElementById('thank-you-message').textContent = config.thank_you_message || defaultConfig.thank_you_message;
+      document.getElementById('contact-info').textContent = config.contact_info || defaultConfig.contact_info;
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => {
+              config.background_color = value;
+              if (window.elementSdk) window.elementSdk.setConfig({ background_color: value });
+            }
+          },
+          {
+            get: () => config.surface_color || defaultConfig.surface_color,
+            set: (value) => {
+              config.surface_color = value;
+              if (window.elementSdk) window.elementSdk.setConfig({ surface_color: value });
+            }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => {
+              config.text_color = value;
+              if (window.elementSdk) window.elementSdk.setConfig({ text_color: value });
+            }
+          },
+          {
+            get: () => config.primary_action_color || defaultConfig.primary_action_color,
+            set: (value) => {
+              config.primary_action_color = value;
+              if (window.elementSdk) window.elementSdk.setConfig({ primary_action_color: value });
+            }
+          },
+          {
+            get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+            set: (value) => {
+              config.secondary_action_color = value;
+              if (window.elementSdk) window.elementSdk.setConfig({ secondary_action_color: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || defaultConfig.font_family,
+          set: (value) => {
+            config.font_family = value;
+            if (window.elementSdk) window.elementSdk.setConfig({ font_family: value });
+          }
+        },
+        fontSizeable: {
+          get: () => config.font_size || defaultConfig.font_size,
+          set: (value) => {
+            config.font_size = value;
+            if (window.elementSdk) window.elementSdk.setConfig({ font_size: value });
+          }
+        }
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ["company_name", config.company_name || defaultConfig.company_name],
+        ["payment_title", config.payment_title || defaultConfig.payment_title],
+        ["transaction_id", config.transaction_id || defaultConfig.transaction_id],
+        ["customer_name", config.customer_name || defaultConfig.customer_name],
+        ["payment_method", config.payment_method || defaultConfig.payment_method],
+        ["amount", config.amount || defaultConfig.amount],
+        ["payment_date", config.payment_date || defaultConfig.payment_date],
+        ["thank_you_message", config.thank_you_message || defaultConfig.thank_you_message],
+        ["contact_info", config.contact_info || defaultConfig.contact_info]
+      ]);
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ac4d2b710a3ba3d',t:'MTc2NTQ1NDQ0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
